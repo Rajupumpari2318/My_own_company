@@ -1,8 +1,9 @@
-name: Build and Upload JAR
+name: Build Java with Maven
 
 on:
   push:
     branches:
+      - develop
       - feature/upload-jar
 
 jobs:
@@ -20,7 +21,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-
       - name: Upload JAR to Azure Blob
         run: |
           az storage blob upload \
