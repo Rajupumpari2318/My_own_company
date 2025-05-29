@@ -3,12 +3,14 @@ name: Build and Upload JAR
 on:
   push:
     branches:
+      - develop
       - feature/upload-jar
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,11 +23,16 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Upload JAR to Azure Blob
+      - name: Upload JAR to Azure Blob Storage
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_CONTAINER: ${{ secrets.AZURE_STORAGE_CONTAINER }}
+          AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
         run: |
           az storage blob upload \
-            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
-            --container-name ${{ secrets.AZURE_STORAGE_CONTAINER }} \
+            --account-name $AZURE_STORAGE_ACCOUNT \
+            --container-name $AZURE_STORAGE_CONTAINER \
             --name sampleapp.jar \
             --file target/sampleapp-1.0-SNAPSHOT.jar \
-            --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN }}"
+            --sas-token "$AZURE_STORAGE_SAS_TOKEN"
+
