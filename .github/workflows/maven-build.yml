@@ -1,17 +1,14 @@
 name: Build and Upload JAR
-# Manual trigger update
 
 on:
   push:
     branches:
-      - develop
       - feature/upload-jar
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -20,7 +17,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'temurin'  # added from other commit
+          distribution: 'temurin'
 
       - name: Build with Maven
         run: mvn clean install
@@ -37,3 +34,4 @@ jobs:
             --name sampleapp.jar \
             --file target/sampleapp-1.0-SNAPSHOT.jar \
             --sas-token "$AZURE_STORAGE_SAS_TOKEN"
+
