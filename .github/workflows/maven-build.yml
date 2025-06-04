@@ -16,9 +16,8 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'temurin'   # ✅ THIS IS REQUIRED
 
       - name: Build with Maven
         run: mvn clean install
@@ -35,4 +34,3 @@ jobs:
             --name sampleapp.jar \
             --file target/sampleapp-1.0-SNAPSHOT.jar \
             --sas-token "$AZURE_STORAGE_SAS_TOKEN"
-
