@@ -8,31 +8,25 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Java 17 (Temurin)
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'   # Required!
-          java-version: '17'
-
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Upload JAR to Azure Blob Storage
-        env:
-          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
-          AZURE_STORAGE_CONTAINER: ${{ secrets.AZURE_STORAGE_CONTAINER }}
-          AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
-        run: |
-          az storage blob upload \
-            --account-name $AZURE_STORAGE_ACCOUNT \
-            --container-name $AZURE_STORAGE_CONTAINER \
-            --name sampleapp.jar \
-            --file target/sampleapp-1.0-SNAPSHOT.jar \
-            --sas-token "$AZURE_STORAGE_SAS_TOKEN" \
-            --overwrite
+      # - name: Upload JAR to Azure Blob Storage
+      #   env:
+      #     AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+      #     AZURE_STORAGE_CONTAINER: ${{ secrets.AZURE_STORAGE_CONTAINER }}
+      #     AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
+      #   run: |
+      #     az storage blob upload \
+      #       --account-name $AZURE_STORAGE_ACCOUNT \
+      #       --container-name $AZURE_STORAGE_CONTAINER \
+      #       --name sampleapp.jar \
+      #       --file target/sampleapp-1.0-SNAPSHOT.jar \
+      #       --sas-token "$AZURE_STORAGE_SAS_TOKEN" \
+      #       --overwrite
