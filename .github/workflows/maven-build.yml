@@ -36,3 +36,8 @@ jobs:
             --file target/sampleapp-1.0-SNAPSHOT.jar \
             --sas-token "$AZURE_STORAGE_SAS_TOKEN" \
             --overwrite
+      - name: Check secret availability
+        run: |
+          echo "AZURE_STORAGE_ACCOUNT is set: [${{ secrets.AZURE_STORAGE_ACCOUNT != '' }}]"
+          echo "AZURE_STORAGE_CONTAINER is set: [${{ secrets.AZURE_STORAGE_CONTAINER != '' }}]"
+          echo "AZURE_STORAGE_SAS_TOKEN is set: [${{ secrets.AZURE_STORAGE_SAS_TOKEN != '' }}]"
