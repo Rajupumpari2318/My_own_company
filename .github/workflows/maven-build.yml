@@ -28,6 +28,7 @@ jobs:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
           AZURE_STORAGE_CONTAINER: ${{ secrets.AZURE_STORAGE_CONTAINER }}
           AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
+          PATH: /opt/az/bin:${{ env.PATH }}   # Add Azure CLI path
         run: |
           az storage blob upload \
             --account-name $AZURE_STORAGE_ACCOUNT \
@@ -36,6 +37,7 @@ jobs:
             --file target/sampleapp-1.0-SNAPSHOT.jar \
             --sas-token "$AZURE_STORAGE_SAS_TOKEN" \
             --overwrite
+
       - name: Check secret availability
         run: |
           echo "AZURE_STORAGE_ACCOUNT is set: [${{ secrets.AZURE_STORAGE_ACCOUNT != '' }}]"
