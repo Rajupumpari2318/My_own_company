@@ -17,7 +17,7 @@ jobs:
       - name: Set up Java 17 (Temurin)
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'   # Mandatory
+          distribution: 'temurin'
           java-version: '17'
 
       - name: Build with Maven
@@ -28,7 +28,6 @@ jobs:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
           AZURE_STORAGE_CONTAINER: ${{ secrets.AZURE_STORAGE_CONTAINER }}
           AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
-          PATH: /opt/az/bin:${{ env.PATH }}   # Add Azure CLI path
         run: |
           az storage blob upload \
             --account-name $AZURE_STORAGE_ACCOUNT \
