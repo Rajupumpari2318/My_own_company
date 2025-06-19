@@ -32,5 +32,5 @@ jobs:
         run: |
           az webapp deploy \
             --resource-group github-runner-rg \
-            --name eexos-services-prod \
+            --name exos-services-prod \
             --src-path target/services-1.1.1-SNAPSHOT.jar
