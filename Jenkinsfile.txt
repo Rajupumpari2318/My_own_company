@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    environment {
+        SONARQUBE_SERVER = 'MySonarQube' // Set this in Jenkins global tool config
+        SONARQUBE_TOKEN = credentials('sonar-token') // Add secret token in Jenkins
+    }
+
+    tools {
+        maven 'Maven 3.8' // Configure this name in Jenkins tools
+    }
+
+    stages {
+        stage('Clone Source') {
+            steps {
+                git 'https://github.com/Rajupumpari2318/My_own_company.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('SonarQube Code Analysis') {
+            steps {
+                withSonarQubeEnv("${SONARQUBE_SERVER}") {
+                    sh "mvn sonar:sonar -Dsonar.projectKey=MyApp -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=$SONARQUBE_TOKEN"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Build and SonarQube analysis completed!"
+        }
+        failure {
+            echo "❌ Build failed or SonarQube issue occurred."
+        }
+    }
+}
